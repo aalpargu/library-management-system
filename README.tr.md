@@ -15,8 +15,8 @@ gcc -std=c99 -Wall -Wextra src/kutuphane.c -o kutuphane
 ./kutuphane
 ```
 
-CSV dosyaları çalışma klasörüne göre okunup yazılır; dosya adları kaynak dosyanın başında tanımlıdır. **Eski README'de sözü edilen örnek CSV/data klasörü depoda bulunmuyor.** Mevcut kayıtlarla çalışmadan önce bunların yedeğini alın.
+CSV dosyaları çalışma klasörüne göre okunup yazılır; dosya adları kaynak dosyanın başında tanımlıdır. Örnek CSV veri dosyaları depoda bulunmuyor. Mevcut kayıtlarla çalışmadan önce bunların yedeğini alın.
 
 Menü öğrenci, kitap ve yazar işlemlerini; ödünç/iade, gecikme tespiti ve puan tabanlı cezaları kapsar.
 
-Tek kaynak dosyalı bir ders uygulamasıdır. Otomatik regresyon testi bulunmaz. 30 Ekim 2026 incelemesinde kaynak kod okundu; C uygulaması derlenip etkileşimli olarak test edilmedi. Yukarıdaki komut, belgelenen derleme adımıdır.
+Tek kaynak dosyalı bir ders uygulamasıdır. Otomatik regresyon testi bulunmaz. Derleme ve menü davranışlarını kullanılan derleyici ortamında ayrıca kontrol etmek gerekir; otomatik regresyon sonucu sunulmuyor.
