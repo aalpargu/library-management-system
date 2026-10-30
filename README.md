@@ -1,109 +1,24 @@
-# 📚 Library Management System (Kütüphane Otomasyon Sistemi)
+# Library Management System
 
-A full-featured, console-based library management system built in C. Manages students, books, authors, and borrowing/return operations with CSV-based data persistence.
+A C console application for students, books, authors and lending records. I built it to practise linked lists, dynamic memory, function-pointer callbacks and file persistence.
 
-> **Kütüphane Otomasyon Sistemi** — Öğrenci, kitap, yazar ve ödünç/iade işlemlerini yöneten, CSV tabanlı veri kalıcılığına sahip konsol uygulaması.
+[Türkçe](README.tr.md)
 
----
+The source is `src/kutuphane.c`. Students use a doubly linked list; books, authors, copies and borrowing records use singly linked lists. A dynamic array holds book-author relationships. Shared CSV routines take callbacks instead of repeating each record-processing loop.
 
-## ✨ Features
+## Build
 
-- **Student Management** — Add, edit, delete students with unique 8-digit IDs
-- **Book Management** — Track books by ISBN with multiple copy support
-- **Author Management** — Maintain author records with auto-incrementing IDs
-- **Borrowing System** — Borrow and return book copies with date tracking
-- **Overdue Detection** — Automatic detection of overdue books (>15 days)
-- **Penalty System** — Score-based penalty system for late returns
-- **Data Persistence** — All data stored in CSV files, loaded on startup and saved on changes
+Use a C compiler such as GCC:
 
-## 🏗️ Technical Highlights
-
-| Feature | Implementation |
-|---|---|
-| **Singly Linked List** | Authors, Books, Book Copies, Borrow Records |
-| **Doubly Linked List** | Students (enables O(1) deletion) |
-| **Function Pointers** | Generic CSV reader/writer and record display callbacks |
-| **Dynamic Memory** | `malloc`/`realloc`/`free` with full cleanup on exit |
-| **Sorted Insertion** | Authors sorted by ID, Books sorted by name (then ISBN) |
-| **Relational Data** | Book-Author many-to-many relationship via dynamic array |
-
-## 📁 Project Structure
-
-```
-├── src/
-│   └── kutuphane.c          # Main source file (~1100 lines)
-├── data/
-│   ├── Yazarlar.csv          # Authors data
-│   ├── Ogrenciler.csv        # Students data
-│   ├── Kitaplar.csv          # Books data
-│   ├── KitapOrnekleri.csv    # Book copies data
-│   ├── KitapYazar.csv        # Book-Author relationships
-│   └── KitapOdunc.csv        # Borrowing records
-└── README.md
-```
-
-## 🚀 Build & Run
-
-### Compile
-```bash
-gcc -o kutuphane src/kutuphane.c -Wall -Wextra
-```
-
-### Run
-```bash
+```sh
+gcc -std=c99 -Wall -Wextra src/kutuphane.c -o kutuphane
 ./kutuphane
 ```
 
-> **Note:** The program expects CSV data files in the working directory. Sample data files are provided in the `data/` folder — copy them to your working directory before running.
+The program reads and writes its CSV files relative to the working directory. **This repository does not include the example CSV data directory described by the older README.** Keep any existing records backed up before running the menu against them. File names are defined near the top of the source.
 
-## 📊 Data Model
+The menu supports student/book/author operations, borrowing and returns, overdue checks and score-based penalties. Borrowing dates drive the overdue calculations.
 
-```
-┌──────────────┐     ┌──────────────────┐     ┌──────────────┐
-│   Yazarlar   │     │  KitapYazar (M:N) │     │   Kitaplar   │
-│──────────────│     │──────────────────│     │──────────────│
-│ yazarNo (PK) │◄────│ yazarID (FK)     │────►│ isbnNo (PK)  │
-│ adi          │     │ kitabinIsbn (FK)  │     │ kitapAdi     │
-│ soyadi       │     └──────────────────┘     │ kopyaSayisi  │
-└──────────────┘                               └──────┬───────┘
-                                                      │ 1:N
-                                               ┌──────┴───────┐
-┌──────────────┐     ┌──────────────────┐     │ KitapKopyasi │
-│  Ogrenciler  │     │  OduncIslemi     │     │──────────────│
-│──────────────│     │──────────────────│     │ kopyaEtiketi │
-│ ogrNo (PK)   │◄────│ oduncAlanOgrNo   │     │ durumu       │
-│ adi          │     │ oduncKitapEtiketi│────►│ (Rafta/OgrNo)│
-│ soyadi       │     │ islemTipi (0/1)  │     └──────────────┘
-│ puan         │     │ islemTarihi      │
-└──────────────┘     └──────────────────┘
-```
+## Limits
 
-## 🎯 Menu Structure
-
-```
-Main Menu
-├── 1. Student Operations
-│   ├── Add / Delete / Edit Student
-│   ├── View Student Details & Borrow History
-│   ├── List Students with Unreturned Books
-│   └── List Penalized Students
-├── 2. Book Operations
-│   ├── Add / Delete / Edit Book
-│   ├── View All Books & Copies
-│   ├── List Available Books (on shelf)
-│   ├── List Overdue Books
-│   └── Assign / Update Book Authors
-├── 3. Author Operations
-│   ├── Add / Delete / Edit Author
-│   └── View Author's Books
-├── 4. Borrow a Book
-├── 5. Return a Book
-└── 0. Exit
-```
-
-## 🛠️ Tech Stack
-
-- **Language:** C (C99)
-- **Data Structures:** Singly & Doubly Linked Lists, Dynamic Arrays
-- **Storage:** CSV File I/O
-- **Design Patterns:** Callback functions via function pointers for generic operations
+This is a single-file coursework application, not a database-backed library service. The repository does not contain an automated regression suite. The 30 October 2026 CV review inspected the source but did not compile or interactively test this C program; the command above is the documented build command, not a new successful build report.
